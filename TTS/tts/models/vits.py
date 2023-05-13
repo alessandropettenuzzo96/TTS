@@ -1782,7 +1782,7 @@ class Vits(BaseTTS):
             self.noise_scale = noise_scale
             self.length_scale = length_scale
             self.noise_scale_dp = noise_scale_dp
-            return self.inference(
+            res = self.inference(
                 text,
                 aux_input={
                     "x_lengths": text_lengths,
@@ -1791,7 +1791,11 @@ class Vits(BaseTTS):
                     "language_ids": None,
                     "durations": None,
                 },
-            )["model_outputs"]
+            )
+            return {
+                "wav": res["model_outputs"][0][0],
+                "dur": res["durations"][0][0]
+            }
 
         self.forward = onnx_inference
 
@@ -1813,11 +1817,12 @@ class Vits(BaseTTS):
             f=output_path,
             verbose=verbose,
             input_names=["input", "input_lengths", "scales", "sid"],
-            output_names=["output"],
+            output_names=["wav", "dur"],
             dynamic_axes={
                 "input": {0: "batch_size", 1: "phonemes"},
                 "input_lengths": {0: "batch_size"},
-                "output": {0: "batch_size", 1: "time1", 2: "time2"},
+                "wav": {0: "time2"},
+                "dur": {0: "batch_size"}
             },
         )
 
@@ -1856,8 +1861,8 @@ class Vits(BaseTTS):
             [self.inference_noise_scale, self.length_scale, self.inference_noise_scale_dp],
             dtype=np.float32,
         )
-        audio = self.onnx_sess.run(
-            ["output"],
+        res = self.onnx_sess.run(
+            ["wav", "dur"],
             {
                 "input": x,
                 "input_lengths": x_lengths,
@@ -1865,7 +1870,7 @@ class Vits(BaseTTS):
                 "sid": None,
             },
         )
-        return audio[0][0]
+        return res
 
 
 ##################################
