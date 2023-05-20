@@ -41,4 +41,4 @@ def _expand_time_spanish(match: "re.Match") -> str:
 
 
 def expand_time_spanish(text: str) -> str:
-    return re.sub(_time_re, _expand_time_english, text)
+    return re.sub(_time_re, _expand_time_spanish, text)
