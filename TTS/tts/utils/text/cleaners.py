@@ -11,6 +11,9 @@ from .english.abbreviations import abbreviations_en
 from .english.number_norm import normalize_numbers as en_normalize_numbers
 from .english.time_norm import expand_time_english
 from .french.abbreviations import abbreviations_fr
+from .spanish.abbreviations import abbreviations_es
+from .spanish.number_norm import normalize_numbers as es_normalize_numbers
+from .spanish.time_norm import expand_time_spanish
 
 # Regular expression matching whitespace:
 _whitespace_re = re.compile(r"\s+")
@@ -21,6 +24,8 @@ def expand_abbreviations(text, lang="en"):
         _abbreviations = abbreviations_en
     elif lang == "fr":
         _abbreviations = abbreviations_fr
+    elif lang == "es":
+        _abbreviations = abbreviations_es
     for regex, replacement in _abbreviations:
         text = re.sub(regex, replacement, text)
     return text
@@ -73,6 +78,8 @@ def replace_symbols(text, lang="en"):
     elif lang == "ca":
         text = text.replace("&", " i ")
         text = text.replace("'", "")
+    elif lang == "es":
+        text = text.replace("&", " y ")
     return text
 
 
@@ -115,6 +122,18 @@ def english_cleaners(text):
     text = en_normalize_numbers(text)
     text = expand_abbreviations(text)
     text = replace_symbols(text)
+    text = remove_aux_symbols(text)
+    text = collapse_whitespace(text)
+    return text
+
+def spanish_cleaners(text):
+    """Pipeline for Spanish text, including number and abbreviation expansion."""
+    # text = convert_to_ascii(text)
+    text = lowercase(text)
+    text = expand_time_spanish(text)
+    text = es_normalize_numbers(text)
+    text = expand_abbreviations(text, lang="es")
+    text = replace_symbols(text, lang="es")
     text = remove_aux_symbols(text)
     text = collapse_whitespace(text)
     return text
