@@ -1,8 +1,5 @@
 import re
-
-import inflect
-
-_inflect = inflect.engine()
+from num2words import num2words
 
 _time_re = re.compile(
     r"""\b
@@ -16,10 +13,10 @@ _time_re = re.compile(
 
 
 def _expand_num(n: int) -> str:
-    return _inflect.number_to_words(n)
+    return num2words(n)
 
 
-def _expand_time_english(match: "re.Match") -> str:
+def _expand_time_spanish(match: "re.Match") -> str:
     hour = int(match.group(1))
     past_noon = hour >= 12
     time = []
@@ -43,5 +40,5 @@ def _expand_time_english(match: "re.Match") -> str:
     return " ".join(time)
 
 
-def expand_time_english(text: str) -> str:
+def expand_time_spanish(text: str) -> str:
     return re.sub(_time_re, _expand_time_english, text)
