@@ -72,7 +72,7 @@ def _expand_ordinal(m):
 
 
 def _expand_number(m):
-    return num2words(m, lang="es")
+    return num2words(m.group(0), lang="es")
 
 
 def normalize_numbers(text):
