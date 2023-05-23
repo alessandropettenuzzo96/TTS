@@ -11,6 +11,8 @@ from .english.abbreviations import abbreviations_en
 from .english.number_norm import normalize_numbers as en_normalize_numbers
 from .english.time_norm import expand_time_english
 from .french.abbreviations import abbreviations_fr
+from .french.number_norm import normalize_numbers as fr_normalize_numbers
+from .french.time_norm import expand_time_french
 from .spanish.abbreviations import abbreviations_es
 from .spanish.number_norm import normalize_numbers as es_normalize_numbers
 from .spanish.time_norm import expand_time_spanish
@@ -153,6 +155,8 @@ def french_cleaners(text):
     """Pipeline for French text. There is no need to expand numbers, phonemizer already does that"""
     text = expand_abbreviations(text, lang="fr")
     text = lowercase(text)
+    text = expand_time_french(text)
+    text = fr_normalize_numbers(text)
     text = replace_symbols(text, lang="fr")
     text = remove_aux_symbols(text)
     text = collapse_whitespace(text)
