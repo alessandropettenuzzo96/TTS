@@ -16,7 +16,7 @@ def _expand_num(n: int) -> str:
     return num2words(n, lang="fr")
 
 
-def _expand_time_spanish(match: "re.Match") -> str:
+def _expand_time_french(match: "re.Match") -> str:
     hour = int(match.group(1))
     past_noon = hour >= 12
     time = []
@@ -40,5 +40,5 @@ def _expand_time_spanish(match: "re.Match") -> str:
     return " ".join(time)
 
 
-def expand_time_spanish(text: str) -> str:
-    return re.sub(_time_re, _expand_time_spanish, text)
+def expand_time_french(text: str) -> str:
+    return re.sub(_time_re, _expand_time_french, text)
