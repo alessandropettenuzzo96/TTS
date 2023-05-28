@@ -16,6 +16,9 @@ from .french.time_norm import expand_time_french
 from .spanish.abbreviations import abbreviations_es
 from .spanish.number_norm import normalize_numbers as es_normalize_numbers
 from .spanish.time_norm import expand_time_spanish
+from .italian.abbreviations import abbreviations_it
+from .italian.number_norm import normalize_numbers as it_normalize_numbers
+from .italian.time_norm import expand_time_italian
 
 # Regular expression matching whitespace:
 _whitespace_re = re.compile(r"\s+")
@@ -28,6 +31,8 @@ def expand_abbreviations(text, lang="en"):
         _abbreviations = abbreviations_fr
     elif lang == "es":
         _abbreviations = abbreviations_es
+    elif lang == "it":
+        _abbreviations = abbreviations_it
     for regex, replacement in _abbreviations:
         text = re.sub(regex, replacement, text)
     return text
@@ -77,6 +82,8 @@ def replace_symbols(text, lang="en"):
         text = text.replace("&", " et ")
     elif lang == "pt":
         text = text.replace("&", " e ")
+    elif lang == "it":
+        text = text.replace("&", " e ")
     elif lang == "ca":
         text = text.replace("&", " i ")
         text = text.replace("'", "")
@@ -124,6 +131,18 @@ def english_cleaners(text):
     text = en_normalize_numbers(text)
     text = expand_abbreviations(text)
     text = replace_symbols(text)
+    text = remove_aux_symbols(text)
+    text = collapse_whitespace(text)
+    return text
+
+def italian_cleaners(text):
+    """Pipeline for Italian text, including number and abbreviation expansion."""
+    # text = convert_to_ascii(text)
+    text = lowercase(text)
+    text = expand_time_italian(text)
+    text = it_normalize_numbers(text)
+    text = expand_abbreviations(text, lang="it")
+    text = replace_symbols(text, lang="it")
     text = remove_aux_symbols(text)
     text = collapse_whitespace(text)
     return text
