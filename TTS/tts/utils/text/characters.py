@@ -461,8 +461,51 @@ class Graphemes(BaseCharacters):
         return characters, new_config
 
 
+class ItalianGraphemes(Graphemes):
+    def __init__(
+        self,
+        characters: str = _characters + "àáèéìíòóùú",
+        punctuations: str = _punctuations,
+        pad: str = _pad,
+        eos: str = _eos,
+        bos: str = _bos,
+        blank: str = _blank,
+        is_unique: bool = False,
+        is_sorted: bool = True,
+    ) -> None:
+        super().__init__(characters, punctuations, pad, eos, bos, blank, is_unique, is_sorted)
+
+    @staticmethod
+    def init_from_config(config: "Coqpit"):
+        """Init a ItalianGraphemes object from a model config
+
+        If characters are not defined in the config, it will be set to the default characters and the config
+        will be updated.
+        """
+        if config.characters is not None:
+            # band-aid for compatibility with old models
+            if "phonemes" in config.characters:
+                return (
+                    ItalianGraphemes(
+                        characters=config.characters["characters"],
+                        punctuations=config.characters["punctuations"],
+                        pad=config.characters["pad"],
+                        eos=config.characters["eos"],
+                        bos=config.characters["bos"],
+                        blank=config.characters["blank"],
+                        is_unique=config.characters["is_unique"],
+                        is_sorted=config.characters["is_sorted"],
+                    ),
+                    config,
+                )
+            return ItalianGraphemes(**config.characters), config
+        characters = ItalianGraphemes()
+        new_config = replace(config, characters=characters.to_config())
+        return characters, new_config
+
 if __name__ == "__main__":
     gr = Graphemes()
+    itgr = ItalianGraphemes()
     ph = IPAPhonemes()
     gr.print_log()
     ph.print_log()

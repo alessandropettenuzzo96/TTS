@@ -84,6 +84,8 @@ def replace_symbols(text, lang="en"):
         text = text.replace("&", " e ")
     elif lang == "it":
         text = text.replace("&", " e ")
+        text = text.replace("%", " per cento ")
+        text = text.replace("@", " chiocciola ")
     elif lang == "ca":
         text = text.replace("&", " i ")
         text = text.replace("'", "")
