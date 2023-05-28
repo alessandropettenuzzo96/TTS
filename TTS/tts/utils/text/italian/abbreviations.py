@@ -10,7 +10,7 @@ abbreviations_it = [
         ("sig.na", "signorina"),
         ("co", "company"),
         ("es", "esempio"),
-        ("ex", "esempio")
+        ("ex", "esempio"),
         ("etc", "eccetera"),
         ("dr", "dottore"),
         ("st", "santo"),
