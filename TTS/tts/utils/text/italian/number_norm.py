@@ -8,7 +8,7 @@ import inflect
 
 _inflect = inflect.engine()
 _comma_number_re = re.compile(r"([0-9][0-9\,]+[0-9])")
-_decimal_number_re = re.compile(r"([0-9]+\.[0-9]+)")
+_decimal_number_re = re.compile(r"([0-9]+[\.\,][0-9]+)")
 _currency_re = re.compile(r"([0-9\,\.]*[0-9]+)|([0-9\,\.]*[0-9]+)(£|\$|¥|€)")
 _ordinal_re = re.compile(r"[0-9]+(o|a)")
 _number_re = re.compile(r"-?[0-9]+")
