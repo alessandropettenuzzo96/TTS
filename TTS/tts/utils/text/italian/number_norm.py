@@ -77,7 +77,7 @@ def _expand_number(m):
 
 def normalize_numbers(text):
     text = re.sub(_comma_number_re, _remove_commas, text)
-    text = re.sub(_decimal_number_re, _expand_decimal_point, text)
+    #text = re.sub(_decimal_number_re, _expand_decimal_point, text)
     text = re.sub(_ordinal_re, _expand_ordinal, text)
     text = re.sub(_number_re, _expand_number, text)
     return text
